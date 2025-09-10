@@ -16,7 +16,9 @@ strictc/
  ├─ examples/
  │   ├─ hello.strict
  │   ├─ math.strict
- │   └─ match.strict
+ │   ├─ oop.strict
+ │   ├─ generics.strict
+ │   └─ metaprogram.strict
  └─ tests/
-     ├─ test.sh
+     ├─ run_tests.sh
      └─ expected_outputs/
