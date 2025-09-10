@@ -270,3 +270,194 @@ Parallel
     Print "In main thread"
 End
 
+📘 Strict Language v5 — Object-Oriented Expansion
+1. 🏛 Classes & Objects
+Class Person
+    Let name
+    Let age
+
+    Func Init(n, a)
+        name = n
+        age = a
+    End
+
+    Func Greet()
+        Print "Hello, my name is " + name
+    End
+End
+
+
+Usage:
+
+Let p = New Person("Ana", 30)
+Call p.Greet()
+
+
+🔗 DGM Mapping:
+
+nest.enter (8B) → enter class scope
+
+derive.child (91) → create object instance
+
+pair.create (93) → object + vtable pairing
+
+array.store (87) → store fields
+
+2. 🧬 Inheritance
+Class Student : Person
+    Let major
+
+    Func Init(n, a, m)
+        Call Parent.Init(n, a)
+        major = m
+    End
+
+    Func Greet()
+        Print "I am " + name + ", studying " + major
+    End
+End
+
+
+Usage:
+
+Let s = New Student("Bob", 21, "Math")
+Call s.Greet()
+
+
+🔗 DGM Mapping:
+
+derive.parent (92) → inherit fields & methods
+
+pair.split (94) → override vs parent methods
+
+3. 🔐 Encapsulation & Access
+Class BankAccount
+    Private Let balance = 0
+
+    Func Deposit(amount)
+        balance = balance + amount
+    End
+
+    Func GetBalance()
+        Return balance
+    End
+End
+
+
+Usage:
+
+Let acc = New BankAccount()
+Call acc.Deposit(100)
+Print acc.GetBalance()
+
+
+🔗 DGM Mapping:
+
+group.spawn (88) → encapsulated storage
+
+group.merge (89) → method access binding
+
+group.split (8A) → private vs public separation
+
+4. 🌲 Polymorphism (Virtual Dispatch)
+Class Animal
+    Func Speak()
+        Print "..."
+    End
+End
+
+Class Dog : Animal
+    Func Speak()
+        Print "Woof!"
+    End
+End
+
+Class Cat : Animal
+    Func Speak()
+        Print "Meow!"
+    End
+End
+
+Let pets = [New Dog(), New Cat()]
+For each in pets Then
+    Call each.Speak()
+End
+
+
+🔗 DGM Mapping:
+
+phi (38) → SSA merge of object types
+
+select (39) → choose method dynamically
+
+language.wrap (B1) → vtable call dispatch
+
+5. 🛡 Interfaces / Abstract Classes
+Interface Shape
+    Func Area()
+End
+
+Class Circle : Shape
+    Let r
+    Func Init(radius)
+        r = radius
+    End
+    Func Area()
+        Return 3.14 * r * r
+    End
+End
+
+
+🔗 DGM Mapping:
+
+language.enclose (B3) → interface contract scope
+
+language.assert (7B) → enforce method implementation
+
+⚙️ Compiler Additions
+1. Class Handling
+
+nest.enter / nest.exit mark class scope
+
+Members lowered to array slots
+
+Methods bound as pairs (pair.create)
+
+2. Inheritance
+
+derive.parent copies parent layout
+
+Method overrides use pair.split
+
+3. Object Allocation
+// New Student("Bob",21,"Math")
+emit("91 derive.child Student")
+emit("87 array.store obj.name, \"Bob\"")
+emit("87 array.store obj.age, 21")
+emit("87 array.store obj.major, \"Math\"")
+
+🖥 Example OOP Strict Program
+Class Person
+    Let name
+    Func Init(n)
+        name = n
+    End
+    Func Greet()
+        Print "Hello, I am " + name
+    End
+End
+
+Class Student : Person
+    Let major
+    Func Init(n, m)
+        Call Parent.Init(n)
+        major = m
+    End
+    Func Greet()
+        Print name + " studies " + major
+    End
+End
+
+Let s = New Student("Ana", "Physics")
+Call s.Greet()
+
