@@ -153,3 +153,61 @@ cmp [y], 8
 jle .caseMany
 jmp .Lend
 
+📘 Strict Language v3 — Full Syntax
+1. Declarations
+Let x = 5
+Let y = Input
+Let name = "StrictLang"
+
+2. Expressions
+x = x + 1
+y = y * 2
+z = (x + y) * 3
+
+3. Conditionals
+If x > y Then
+    Print "x greater"
+Else
+    Print "y greater or equal"
+End
+
+4. Loops
+For i = 1..10 Then
+    Print i
+End
+
+While x < 100 Then
+    x = x + 1
+End
+
+5. Functions
+Func Square(n)
+    Return n * n
+End
+
+Let result = Call Square(7)
+Print result
+
+6. Data Structures
+Let nums = [1, 2, 3]
+List.Append nums, 4
+List.Remove nums, 2
+Array.Store nums, 1, 99
+
+7. Pattern Matching
+Match y
+    Case 0: Print "none"
+    Case 1..5: Print "few"
+    Case 6..8: Print "many"
+    Case <0: Print "negative"
+End
+
+8. Safety Ops (50–7B DGM region)
+Safe.Add x, y      -- guarded ADD
+Safe.Sub x, y
+Safe.Div x, y
+
+9. Parallelism + Future Extensions (A0–BB CIAM ops)
+Future Task1
+    Print "running async"
+End
