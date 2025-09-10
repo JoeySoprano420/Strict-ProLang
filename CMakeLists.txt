@@ -14,3 +14,10 @@ add_executable(strictc
     src/dgm_translator.cpp
     src/runtime.c
 )
+
+# Platform-specific settings
+if (WIN32)
+    target_compile_definitions(strictc PRIVATE _CRT_SECURE_NO_WARNINGS)
+elseif(APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
+endif()
