@@ -3,6 +3,33 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+# strictc/src/runtime.c
+...
+// ================== Concurrency ==================
+void* thread_entry(void* arg) {
+    void (*fn)() = (void(*)())arg;
+    fn();
+    return NULL;
+}
+
+pthread_t runtime_future(void (*fn)()) {
+    pthread_t t;
+    pthread_create(&t, NULL, thread_entry, (void*)fn);
+    return t;
+}
+
+void runtime_parallel(void (*fn1)(), void (*fn2)()) {
+    pthread_t t1, t2;
+    pthread_create(&t1, NULL, thread_entry, (void*)fn1);
+    pthread_create(&t2, NULL, thread_entry, (void*)fn2);
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+}
+
+void runtime_sync() {
+    // barrier stub (extendable)
+}
+...
 
 // ================== Core I/O ==================
 int strict_input() {
