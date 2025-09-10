@@ -17,4 +17,8 @@ strictc/
  ├── examples/
  │    ├── hello.strict
  │    └── concurrency.strict
+ ├── bin/
+ │    ├── strictc-linux    (prebuilt on Ubuntu 22.04 w/ clang+LLVM)
+ │    ├── strictc-win.exe  (prebuilt on MSVC 2022)
+ │    └── strictc-macos    (prebuilt on macOS 14 clang)
  └── .github/workflows/build.yml
