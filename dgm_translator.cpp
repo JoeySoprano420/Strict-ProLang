@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 # strictc/src/dgm_translator.cpp
+
 ...
     // CIAM A0–BB
     else if(line.find("A6 echo")!=std::string::npos){
