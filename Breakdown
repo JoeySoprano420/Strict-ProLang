@@ -1,4 +1,103 @@
-*Struct*
+📘 Strict Language v6 — Generics, Templates & Metaprogramming
+1. 🧩 Generics (Parametric Types)
+Class Box<T>
+    Let value
+
+    Func Init(v)
+        value = v
+    End
+
+    Func Get()
+        Return value
+    End
+End
+
+Let intBox = New Box<Int>(42)
+Print intBox.Get()
+
+Let strBox = New Box<String>("Hello")
+Print strBox.Get()
+
+
+🔗 DGM Mapping
+
+language.derive (A3) → template instantiation
+
+language.infer (A8) → infer type parameter
+
+language.replace (AA) → specialize with concrete type
+
+2. 🏗 Templates (Compile-Time Expansion)
+Template Max<T>(a, b)
+    If a > b Then
+        Return a
+    Else
+        Return b
+    End
+End
+
+Print Call Max<Int>(10, 7)
+Print Call Max<String>("apple", "zebra")
+
+
+🔗 DGM Mapping
+
+language.inline (A0) → force inlining
+
+language.expand (A1) → expand template body
+
+language.fold (A2) → constant-fold where possible
+
+3. 🌀 Compile-Time Evaluation (CTE)
+Const SIZE = 4 * 8
+
+Let arr = Array.New<SIZE>()
+
+
+🔗 DGM Mapping
+
+language.fold (A2) → fold constants into IR
+
+language.trace (A5) → compile-time debug hooks
+
+4. 🛠 Metaprogramming Macros
+Macro Repeat<N>(code)
+    For i = 1..N Then
+        Expand code
+    End
+End
+
+Repeat<3>( Print "Hello" )
+
+
+Expands at compile time →
+
+Print "Hello"
+Print "Hello"
+Print "Hello"
+
+
+🔗 DGM Mapping
+
+language.macro (A4) → macro define
+
+language.expand (A1) → macro expansion
+
+language.pragma (BA) → compiler directives
+
+5. 🔧 Type Inference & Auto
+Let a = 42        -- inferred as Int
+Let b = "world"   -- inferred as String
+
+
+🔗 DGM Mapping
+
+language.infer (A8) → infer at IR lowering
+
+language.echo (A6) → debug inferred type if requested
+
+6. 🖇 Metaprogramming with Reflection
+Reflect Person*Struct*
 
 01 alloca x
 01 alloca y
@@ -460,4 +559,105 @@ End
 
 Let s = New Student("Ana", "Physics")
 Call s.Greet()
+
+📘 Strict Language v6 — Generics, Templates & Metaprogramming
+1. 🧩 Generics (Parametric Types)
+Class Box<T>
+    Let value
+
+    Func Init(v)
+        value = v
+    End
+
+    Func Get()
+        Return value
+    End
+End
+
+Let intBox = New Box<Int>(42)
+Print intBox.Get()
+
+Let strBox = New Box<String>("Hello")
+Print strBox.Get()
+
+
+🔗 DGM Mapping
+
+language.derive (A3) → template instantiation
+
+language.infer (A8) → infer type parameter
+
+language.replace (AA) → specialize with concrete type
+
+2. 🏗 Templates (Compile-Time Expansion)
+Template Max<T>(a, b)
+    If a > b Then
+        Return a
+    Else
+        Return b
+    End
+End
+
+Print Call Max<Int>(10, 7)
+Print Call Max<String>("apple", "zebra")
+
+
+🔗 DGM Mapping
+
+language.inline (A0) → force inlining
+
+language.expand (A1) → expand template body
+
+language.fold (A2) → constant-fold where possible
+
+3. 🌀 Compile-Time Evaluation (CTE)
+Const SIZE = 4 * 8
+
+Let arr = Array.New<SIZE>()
+
+
+🔗 DGM Mapping
+
+language.fold (A2) → fold constants into IR
+
+language.trace (A5) → compile-time debug hooks
+
+4. 🛠 Metaprogramming Macros
+Macro Repeat<N>(code)
+    For i = 1..N Then
+        Expand code
+    End
+End
+
+Repeat<3>( Print "Hello" )
+
+
+Expands at compile time →
+
+Print "Hello"
+Print "Hello"
+Print "Hello"
+
+
+🔗 DGM Mapping
+
+language.macro (A4) → macro define
+
+language.expand (A1) → macro expansion
+
+language.pragma (BA) → compiler directives
+
+5. 🔧 Type Inference & Auto
+Let a = 42        -- inferred as Int
+Let b = "world"   -- inferred as String
+
+
+🔗 DGM Mapping
+
+language.infer (A8) → infer at IR lowering
+
+language.echo (A6) → debug inferred type if requested
+
+6. 🖇 Metaprogramming with Reflection
+Reflect Person
 
