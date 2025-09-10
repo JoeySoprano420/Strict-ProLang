@@ -40,6 +40,19 @@ Expr* Parser::parsePrimary() {
     if (cur.type == TOK_IDENTIFIER) {
         std::string n = cur.text;
         advance();
+
+        // function call?
+        if (check(TOK_LPAREN)) {
+            advance();
+            std::vector<Expr*> args;
+            if (!check(TOK_RPAREN)) {
+                do {
+                    args.push_back(parseExpr());
+                } while (match(TOK_COMMA));
+            }
+            consume(TOK_RPAREN, ")");
+            return new CallExpr(n, args);
+        }
         return new VarExpr(n);
     }
     if (cur.type == TOK_LPAREN) {
@@ -122,37 +135,70 @@ Stmt* Parser::parseReturn() {
     return s;
 }
 
-// Minimal stubs for completeness
 Stmt* Parser::parseFunc() {
     consume(TOK_FUNC, "Func");
     std::string name = cur.text;
     consume(TOK_IDENTIFIER, "function name");
-    auto s = new PrintStmt();
-    s->expr = new StringExpr("Func " + name + " defined");
-    while (!check(TOK_END) && cur.type != TOK_EOF) advance();
+
+    std::vector<std::string> params;
+    if (match(TOK_LPAREN)) {
+        if (!check(TOK_RPAREN)) {
+            do {
+                std::string param = cur.text;
+                consume(TOK_IDENTIFIER, "parameter");
+                params.push_back(param);
+            } while (match(TOK_COMMA));
+        }
+        consume(TOK_RPAREN, ")");
+    }
+
+    auto f = new FuncStmt();
+    f->name = name;
+    f->params = params;
+
+    while (!check(TOK_END) && cur.type != TOK_EOF) {
+        f->body.push_back(parseStmt());
+    }
     consume(TOK_END, "End");
-    return s;
+    return f;
 }
 
 Stmt* Parser::parseClass() {
     consume(TOK_CLASS, "Class");
     std::string name = cur.text;
     consume(TOK_IDENTIFIER, "class name");
-    auto s = new PrintStmt();
-    s->expr = new StringExpr("Class " + name + " defined");
-    while (!check(TOK_END) && cur.type != TOK_EOF) advance();
+
+    auto c = new ClassStmt();
+    c->name = name;
+
+    while (!check(TOK_END) && cur.type != TOK_EOF) {
+        c->body.push_back(parseStmt());
+    }
     consume(TOK_END, "End");
-    return s;
+    return c;
 }
 
 Stmt* Parser::parseMatch() {
     consume(TOK_MATCH, "Match");
     Expr* target = parseExpr();
-    auto s = new PrintStmt();
-    s->expr = new StringExpr("Match not fully implemented");
-    while (!check(TOK_END) && cur.type != TOK_EOF) advance();
+    auto m = new MatchStmt();
+    m->target = target;
+
+    while (!check(TOK_END) && cur.type != TOK_EOF) {
+        consume(TOK_CASE, "Case");
+        Expr* pat = parseExpr();
+        CaseStmt caseNode;
+        caseNode.pattern = pat;
+
+        while (!check(TOK_END) && !check(TOK_CASE) && cur.type != TOK_EOF) {
+            caseNode.body.push_back(parseStmt());
+        }
+        consume(TOK_END, "End");
+        m->cases.push_back(caseNode);
+    }
+
     consume(TOK_END, "End");
-    return s;
+    return m;
 }
 
 Stmt* Parser::parseStmt() {
