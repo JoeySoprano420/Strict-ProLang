@@ -1,0 +1,12 @@
+// Example Strict-ProLang program
+// Base-12 number system with strict instruction counting
+
+// Variable declarations
+let x = A;      // A = 10 in base-12
+let y = B;      // B = 11 in base-12
+let z = 12;     // 12 in base-12 = 14 in base-10
+
+// Simple operations
+print x;
+print y;
+print z;

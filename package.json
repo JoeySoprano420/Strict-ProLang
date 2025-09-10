@@ -1,0 +1,46 @@
+{
+  "name": "strict-prolang",
+  "version": "0.1.0",
+  "description": "Strict-ProLang: Every Instruction Counts — Safe, Contextual, Base-12 Precision",
+  "main": "src/index.js",
+  "bin": {
+    "strict-prolang": "./bin/strict-prolang.js",
+    "spl": "./bin/strict-prolang.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "build": "npm run build:cli && npm run build:lib",
+    "build:cli": "mkdir -p dist && cp -r bin dist/",
+    "build:lib": "mkdir -p dist && cp -r src dist/",
+    "test": "node test/test.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "programming-language",
+    "interpreter",
+    "compiler",
+    "base-12",
+    "strict",
+    "contextual"
+  ],
+  "author": "JoeySoprano420",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoeySoprano420/Strict-ProLang.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JoeySoprano420/Strict-ProLang/issues"
+  },
+  "homepage": "https://github.com/JoeySoprano420/Strict-ProLang#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "src/",
+    "bin/",
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ]
+}

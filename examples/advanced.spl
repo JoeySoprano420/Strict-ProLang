@@ -1,0 +1,15 @@
+// Advanced Strict-ProLang example
+// Demonstrating base-12 arithmetic and contextual features
+
+// Base-12 number examples
+let dozen = 10;       // 10 in base-12 = 12 in decimal
+let grossMinusOne = BB; // BB in base-12 = 143 in decimal
+
+// Variables with contextual meaning
+let precision = A;    // High precision (10)
+let safety = B;       // Maximum safety (11)
+
+print dozen;
+print grossMinusOne;
+print precision;
+print safety;
