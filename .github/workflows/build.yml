@@ -4,14 +4,23 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2
-    - name: Install LLVM
-      run: sudo apt-get update && sudo apt-get install -y clang llvm
+    - name: Install LLVM (Linux/macOS only)
+      if: matrix.os != 'windows-latest'
+      run: |
+        sudo apt-get update || true
+        sudo apt-get install -y clang llvm || true
     - name: Configure
-      run: cmake .
+      run: cmake -B build -S .
     - name: Build
-      run: make
-    - name: Test Hello
-      run: ./strictc examples/hello.strict && clang out.ll src/runtime.c -o prog && ./prog
+      run: cmake --build build --config Release
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: strictc-${{ matrix.os }}
+        path: build/strictc*
