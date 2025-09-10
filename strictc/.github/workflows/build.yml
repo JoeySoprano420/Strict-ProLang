@@ -1,0 +1,16 @@
+# strictc/.github/workflows/build.yml
+name: Build StrictC
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install LLVM
+      run: sudo apt-get install -y llvm clang
+    - name: Build
+      run: cmake . && make
+    - name: Run Tests
+      run: ./tests/run_tests.sh
