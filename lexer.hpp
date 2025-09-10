@@ -1,54 +1,41 @@
 #pragma once
-#include <string>
+#include "lexer.hpp"
+#include "ast.hpp"
 #include <vector>
+#include <stdexcept>
+#include <string>
 
-enum TokenType {
-    TOK_EOF, TOK_ERROR,
-    TOK_LET, TOK_IF, TOK_ELSE, TOK_END,
-    TOK_FUNC, TOK_RETURN,
-    TOK_CLASS, TOK_NEW,
-    TOK_MATCH, TOK_CASE,
-    TOK_PRINT, TOK_INPUT,
-    TOK_MODULE, TOK_IMPORT,
-    TOK_MACRO, TOK_TEMPLATE,
-    // literals
-    TOK_IDENTIFIER, TOK_NUMBER, TOK_STRING,
-    // operators and symbols
-    TOK_OP, TOK_DOTDOT,
-    TOK_LPAREN, TOK_RPAREN,
-    TOK_LBRACE, TOK_RBRACE,
-    TOK_LBRACK, TOK_RBRACK,
-    TOK_COMMA, TOK_COLON,
-    TOK_EQUAL
-};
-
-struct Token {
-    TokenType type;
-    std::string text;
-    int value;
-};
-
-class Lexer {
-    std::string src;
-    size_t pos = 0;
-    int line = 1, col = 1;
+class Parser {
+    Lexer& lexer;
+    Token cur;
 
 public:
-    Lexer(const std::string& s) : src(s) {}
-    Token next();
+    Parser(Lexer& l) : lexer(l) { cur = lexer.next(); }
+
+    std::vector<Stmt*> parseProgram();
 
 private:
-    char peek() const { return pos < src.size() ? src[pos] : '\0'; }
-    char advance() {
-        if (pos < src.size()) {
-            char c = src[pos++];
-            if (c == '\n') { line++; col = 1; }
-            else col++;
-            return c;
-        }
-        return '\0';
-    }
-    bool eof() const { return pos >= src.size(); }
-    void skipWhitespace();
-    void skipComment();
+    // utility
+    void consume(TokenType t, const std::string& msg);
+    bool match(TokenType t);
+    bool check(TokenType t) const { return cur.type == t; }
+    void advance() { cur = lexer.next(); }
+
+    // expressions
+    Expr* parseExpr();
+    Expr* parsePrimary();
+    Expr* parseBinaryRHS(int exprPrec, Expr* lhs);
+
+    // statements
+    Stmt* parseStmt();
+    Stmt* parseLet();
+    Stmt* parsePrint();
+    Stmt* parseIf();
+    Stmt* parseReturn();
+    Stmt* parseFunc();
+    Stmt* parseClass();
+    Stmt* parseMatch();
+
+    // precedence
+    int precedence(const std::string& op);
 };
