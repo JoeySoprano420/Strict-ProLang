@@ -4,6 +4,28 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+# strictc/src/dgm_translator.cpp
+...
+    // CIAM A0–BB
+    else if(line.find("A6 echo")!=std::string::npos){
+        out << "  call i32 @puts(i8* getelementptr ([20 x i8], [20 x i8]* @.str, i32 0, i32 0))\n";
+    }
+    else if(line.find("B7 language.future")!=std::string::npos){
+        out << "  ; spawn future thread\n";
+        out << "  call i64 @runtime_future(void ()* @task_fn)\n";
+    }
+    else if(line.find("B8 language.parallel")!=std::string::npos){
+        out << "  ; run two tasks in parallel\n";
+        out << "  call void @runtime_parallel(void ()* @task1_fn, void ()* @task2_fn)\n";
+    }
+    else if(line.find("B9 language.sync")!=std::string::npos){
+        out << "  call void @runtime_sync()\n";
+    }
+    else if(line.find("BB language.exit")!=std::string::npos){
+        out << "  call void @runtime_halt()\n";
+    }
+...
+
 
 void DGMTranslator::translate(const std::string& inFile,const std::string& outFile){
     std::ifstream in(inFile);
