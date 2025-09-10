@@ -4,21 +4,25 @@ strictc/
  │   ├─ lexer.cpp
  │   ├─ parser.cpp
  │   ├─ ast.cpp
- │   ├─ codegen_dgm.cpp
- │   ├─ codegen_llvm.cpp
+ │   ├─ dgm_emitter.cpp      # Strict → DGM
+ │   ├─ dgm_translator.cpp   # DGM → LLVM IR
+ │   ├─ codegen_llvm.cpp     # LLVM → obj/nasm
  │   ├─ driver.cpp
  │   └─ runtime.c
  ├─ include/
  │   ├─ lexer.hpp
  │   ├─ parser.hpp
  │   ├─ ast.hpp
+ │   ├─ dgm_emitter.hpp
+ │   ├─ dgm_translator.hpp
  │   ├─ codegen.hpp
  ├─ examples/
  │   ├─ hello.strict
- │   ├─ math.strict
+ │   ├─ match.strict
  │   ├─ oop.strict
  │   ├─ generics.strict
- │   └─ metaprogram.strict
- └─ tests/
-     ├─ run_tests.sh
-     └─ expected_outputs/
+ │   └─ macros.strict
+ ├─ tests/
+ │   ├─ run_tests.sh
+ │   └─ expected_outputs/
+ └─ .github/workflows/build.yml
