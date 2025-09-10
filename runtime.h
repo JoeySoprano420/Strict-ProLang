@@ -1,6 +1,14 @@
 # strictc/include/runtime.h
 #pragma once
 #include <pthread.h>
+# strictc/include/runtime.h
+...
+// ================== Concurrency ==================
+pthread_t runtime_future(void (*fn)());
+void runtime_parallel(void (*fn1)(), void (*fn2)());
+void runtime_sync();
+...
+
 
 // ================== Core I/O ==================
 int strict_input();
