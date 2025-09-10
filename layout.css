@@ -1,0 +1,20 @@
+strictc/
+ ├── CMakeLists.txt
+ ├── include/
+ │    ├── lexer.hpp
+ │    ├── parser.hpp
+ │    ├── ast.hpp
+ │    ├── dgm_emitter.hpp
+ │    ├── dgm_translator.hpp
+ │    └── runtime.h
+ ├── src/
+ │    ├── lexer.cpp
+ │    ├── parser.cpp
+ │    ├── dgm_emitter.cpp
+ │    ├── dgm_translator.cpp
+ │    ├── runtime.c
+ │    └── main.cpp
+ ├── examples/
+ │    ├── hello.strict
+ │    └── concurrency.strict
+ └── .github/workflows/build.yml
