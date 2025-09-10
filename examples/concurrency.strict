@@ -1,0 +1,14 @@
+Future TaskA
+    Print "From A"
+End
+
+Future TaskB
+    Print "From B"
+End
+
+Print "Outside tasks"
+
+Parallel
+    TaskA
+    TaskB
+End
