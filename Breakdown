@@ -211,3 +211,62 @@ Safe.Div x, y
 Future Task1
     Print "running async"
 End
+
+📘 Strict Language v4 — Expanded Features
+1. 📦 Modules & Imports
+
+Strict supports modular programming. Each .strict file is a module.
+
+Module Math
+
+Func Add(a, b)
+    Return a + b
+End
+
+Export Add
+
+
+Usage:
+
+Import Math
+
+Let z = Call Math.Add(3, 4)
+Print z
+
+
+🔗 DGM Mapping:
+
+language.link (A7) → dynamic linking of module functions.
+
+language.open (B4) / language.close (B5) → load/unload module files.
+
+2. 📝 Macros (CIAM Extensions)
+
+Strict integrates Contextual Inference Abstraction Macros (CIAM).
+
+Macro Double(x)
+    Return x + x
+End
+
+Let y = Double(7)
+Print y
+
+
+🔗 DGM Mapping:
+
+language.macro (A4)
+
+language.expand (A1)
+
+language.fold (A2)
+
+3. ⚡ Concurrency & Futures
+Future Task1
+    Print "Running async"
+End
+
+Parallel
+    Task1
+    Print "In main thread"
+End
+
