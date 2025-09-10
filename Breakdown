@@ -1,0 +1,155 @@
+*Struct*
+
+01 alloca x
+01 alloca y
+03 store 5 -> x
+03 store input -> y
+
+15 icmp x > y
+30 br cond_true, cond_end
+
+15 icmp y < 4
+30 br cond_true, cond_end
+
+17 add x, y -> tmp
+15 icmp tmp in 0..8
+30 br cond_true, cond_end
+
+95 match.begin
+96 match.case y=1..5
+A6 language.echo "few"
+96 match.case y=6..8
+A6 language.echo "many"
+96 match.case y=0
+A6 language.echo "none"
+96 match.case y<0
+A6 language.echo "negative"
+97 match.end
+
+33 ret
+
+
+
+*DGM*
+
+01 alloca x
+01 alloca y
+03 store 5 -> x
+03 store input -> y
+
+15 icmp x > y
+30 br cond_true, cond_end
+
+15 icmp y < 4
+30 br cond_true, cond_end
+
+17 add x, y -> tmp
+15 icmp tmp in 0..8
+30 br cond_true, cond_end
+
+95 match.begin
+96 match.case y=1..5
+A6 language.echo "few"
+96 match.case y=6..8
+A6 language.echo "many"
+96 match.case y=0
+A6 language.echo "none"
+96 match.case y<0
+A6 language.echo "negative"
+97 match.end
+
+33 ret
+
+
+*LLVM*
+
+%x = alloca i32
+%y = alloca i32
+store i32 5, i32* %x
+%inp = call i32 @get_input()
+store i32 %inp, i32* %y
+
+%valx = load i32, i32* %x
+%valy = load i32, i32* %y
+%cmp1 = icmp sgt i32 %valx, %valy
+br i1 %cmp1, label %L1, label %Lend
+
+L1:
+%cmp2 = icmp slt i32 %valy, 4
+br i1 %cmp2, label %L2, label %Lend
+
+L2:
+%sum = add i32 %valx, %valy
+%inrange = icmp sge i32 %sum, 0
+%inrange2 = icmp sle i32 %sum, 8
+%ok = and i1 %inrange, %inrange2
+br i1 %ok, label %L3, label %Lend
+
+L3:
+; match cases
+switch i32 %valy, label %default [
+  i32 1, label %caseFew
+  i32 2, label %caseFew
+  i32 3, label %caseFew
+  i32 4, label %caseFew
+  i32 5, label %caseFew
+  i32 6, label %caseMany
+  i32 7, label %caseMany
+  i32 8, label %caseMany
+  i32 0, label %caseNone
+]
+
+caseFew:
+  call void @puts(i8* getelementptr ([4 x i8], [4 x i8]* @.few, i32 0, i32 0))
+  br label %Lend
+caseMany:
+  call void @puts(i8* getelementptr ([5 x i8], [5 x i8]* @.many, i32 0, i32 0))
+  br label %Lend
+caseNone:
+  call void @puts(i8* getelementptr ([5 x i8], [5 x i8]* @.none, i32 0, i32 0))
+  br label %Lend
+default:
+  %neg = icmp slt i32 %valy, 0
+  br i1 %neg, label %caseNeg, label %Lend
+caseNeg:
+  call void @puts(i8* getelementptr ([9 x i8], [9 x i8]* @.negative, i32 0, i32 0))
+  br label %Lend
+
+Lend:
+ret void
+
+
+*NASM x64 Output*
+
+; x=5, y=input
+mov DWORD [x], 5
+call get_input
+mov DWORD [y], eax
+
+; if x > y
+mov eax, [x]
+cmp eax, [y]
+jle .Lend
+
+; if y < 4
+cmp [y], 4
+jge .Lend
+
+; if x+y in 0..8
+mov eax, [x]
+add eax, [y]
+cmp eax, 0
+jl .Lend
+cmp eax, 8
+jg .Lend
+
+; match cases
+cmp [y], 0
+je .caseNone
+jl .caseNeg
+cmp [y], 5
+jle .caseFew
+cmp [y], 8
+jle .caseMany
+jmp .Lend
+
