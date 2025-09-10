@@ -1,0 +1,20 @@
+strictc/
+ ├─ CMakeLists.txt
+ ├─ src/
+ │   ├─ lexer.cpp
+ │   ├─ parser.cpp
+ │   ├─ ast.cpp
+ │   ├─ codegen_dgm.cpp
+ │   ├─ codegen_llvm.cpp
+ │   ├─ driver.cpp
+ │   └─ runtime.c
+ ├─ include/
+ │   ├─ lexer.hpp
+ │   ├─ parser.hpp
+ │   ├─ ast.hpp
+ │   ├─ codegen.hpp
+ ├─ examples/
+ │   ├─ hello.strict
+ │   └─ conditions.strict
+ └─ tests/
+     └─ run_tests.sh
