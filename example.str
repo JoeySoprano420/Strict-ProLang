@@ -1,0 +1,19 @@
+Let x = 5
+Let y = Input
+
+If x > y And y < 4 Then
+    If x + y = 0..8 Then
+        If y = 1..5 Then
+            Print "few"
+        End
+        If y = 6..8 Then
+            Print "many"
+        End
+        If y = 0 Then
+            Print "none"
+        End
+        If y < 0 Then
+            Print "negative"
+        End
+    End
+End
